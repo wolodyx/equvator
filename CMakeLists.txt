@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(wxWidgets REQUIRED)
 include(${wxWidgets_USE_FILE})
 
+find_package(OpenCV 4.5.5 REQUIRED)
+
 enable_testing()
 
 add_subdirectory(lib)
