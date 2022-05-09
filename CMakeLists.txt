@@ -7,8 +7,12 @@ project(equvator
 
 set(CMAKE_CXX_STANDARD 11)
 
+find_package(wxWidgets REQUIRED)
+include(${wxWidgets_USE_FILE})
+
 enable_testing()
 
 add_subdirectory(lib)
+add_subdirectory(src)
 add_subdirectory(tests)
 
