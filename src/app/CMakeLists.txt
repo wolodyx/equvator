@@ -1,4 +1,7 @@
-add_executable(app main.cpp)
+set(APP_SOURCES
+    main.cpp
+    VideoCanvas.h        VideoCanvas.cpp
+)
 
 include_directories(
     ${wxWidgets_INCLUDE_DIRS}
@@ -6,6 +9,8 @@ include_directories(
 )
 
 link_libraries(${wxWidgets_LIBRARY_DIRS})
+
+add_executable(app ${APP_SOURCES})
 
 target_link_libraries(app
     ${wxWidgets_LIBRARIES}
