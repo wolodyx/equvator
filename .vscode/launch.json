@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "g++ - Сборка и отладка активного файла",
+            "name": "Debug",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/bin/app",
@@ -22,6 +22,7 @@
                     "ignoreFailures": true
                 }
             ],
+            "preLaunchTask": "Build project",
             "miDebuggerPath": "/usr/bin/gdb"
         }
     ]
