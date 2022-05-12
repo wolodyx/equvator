@@ -47,11 +47,8 @@ bool Convert(const cv::Mat& img, wxBitmap& bitmap)
 }
 }
 
-bool VideoCanvas::LoadImage(const wxString& fileName)
+bool VideoCanvas::LoadImage(const cv::Mat& img)
 {
-    cv::Mat img = cv::imread(fileName.ToStdString(), cv::IMREAD_COLOR);
-    if(img.empty())
-        return false;
     if(!Convert(img,*m_bitmap))
         return false;
     Refresh();

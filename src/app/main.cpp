@@ -3,6 +3,9 @@
     #include <wx/wx.h>
 #endif
 
+#include <opencv2/opencv.hpp>
+
+#include "DataProvider.h"
 #include "VideoCanvas.h"
 
 
@@ -18,23 +21,25 @@ class MainFrame: public wxFrame
 public:
     MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 private:
-    void OnHello(wxCommandEvent& event);
+    void OnTimer(wxTimerEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
     wxDECLARE_EVENT_TABLE();
 private:
+    wxTimer* m_timer;
+    DataProvider m_provider;
     VideoCanvas* m_canvas;
 };
 
 
 enum
 {
-    ID_Hello = 1
+    ID_Timer = 1
 };
 
 
 wxBEGIN_EVENT_TABLE(MainFrame, wxFrame)
-    EVT_MENU(ID_Hello,   MainFrame::OnHello)
+    EVT_TIMER(ID_Timer,  MainFrame::OnTimer)
     EVT_MENU(wxID_EXIT,  MainFrame::OnExit)
     EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 wxEND_EVENT_TABLE()
@@ -53,7 +58,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
         : wxFrame(NULL, wxID_ANY, title, pos, size)
 {
     wxMenu *menuFile = new wxMenu;
-    menuFile->Append(ID_Hello, "&Open File...\tCtrl-O", "Load file");
     menuFile->AppendSeparator();
     menuFile->Append(wxID_EXIT);
     wxMenu *menuHelp = new wxMenu;
@@ -70,6 +74,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     auto panelSizer = new wxBoxSizer(wxVERTICAL);
     panelSizer->Add(m_canvas, 1, wxEXPAND);
     panel->SetSizer(panelSizer);
+
+    m_timer = new wxTimer(this, ID_Timer);
+    m_timer->Start(1000);
 }
 
 
@@ -86,18 +93,15 @@ void MainFrame::OnAbout(wxCommandEvent& event)
 }
 
 
-void MainFrame::OnHello(wxCommandEvent& event)
+void MainFrame::OnTimer(wxTimerEvent& event)
 {
-    wxFileDialog dlg(this,
-        ("Open XYZ file"),
-        "",
-        "",
-        "Image files (*.bmp;*.gif;*.png)|*.bmp;*.gif;*.png",
-        wxFD_OPEN|wxFD_FILE_MUST_EXIST);
+    cv::Mat img;
+    m_provider.GetFrame(img);
 
-    if(dlg.ShowModal() == wxID_CANCEL)
-        return;
+    auto sz = this->GetClientSize();
+    cv::Mat img2;
+    resize(img, img2, cv::Size(sz.x,sz.y), cv::INTER_LINEAR);
 
-    if(!m_canvas->LoadImage(dlg.GetPath()))
+    if(!m_canvas->LoadImage(img2))
         return;
 }

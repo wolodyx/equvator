@@ -4,6 +4,8 @@
 #include <wx/wx.h>
 #include <wx/scrolwin.h>
 
+namespace cv { class Mat; }
+
 
 class VideoCanvas : public wxScrolledCanvas
 {
@@ -11,7 +13,7 @@ public:
     VideoCanvas(wxWindow*);
     virtual ~VideoCanvas();
 
-    bool LoadImage(const wxString& fileName);
+    bool LoadImage(const cv::Mat&);
 
 private:
     void OnPaint(wxPaintEvent&);

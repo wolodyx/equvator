@@ -1,5 +1,6 @@
 set(APP_SOURCES
     main.cpp
+    DataProvider.h       DataProvider.cpp
     VideoCanvas.h        VideoCanvas.cpp
 )
 
