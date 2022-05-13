@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<resource>
+  <object name="map"      class="wxBitmap">resource/map.png</object>
+  <object name="snapshot" class="wxBitmap">resource/snapshot.png</object>
+  <object name="movement" class="wxBitmap">resource/movement.png</object>
+</resource>

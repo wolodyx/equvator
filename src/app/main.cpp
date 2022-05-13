@@ -5,8 +5,13 @@
 
 #include <opencv2/opencv.hpp>
 
+#include <wx/xrc/xmlres.h>
+#include <wx/xrc/xh_bmp.h>
+
 #include "DataProvider.h"
 #include "VideoCanvas.h"
+
+extern void InitXmlResource(); //< resource.cpp
 
 
 class MyApp: public wxApp
@@ -48,6 +53,13 @@ wxIMPLEMENT_APP(MyApp);
 
 bool MyApp::OnInit()
 {
+    if(!wxApp::OnInit())
+        return false;
+
+    wxImage::AddHandler(new wxPNGHandler());
+    wxXmlResource::Get()->AddHandler(new wxBitmapXmlHandler());
+    InitXmlResource();
+
     MainFrame *frame = new MainFrame( "Hello World", wxPoint(50, 50), wxSize(450, 340) );
     frame->Show( true );
     return true;
@@ -68,6 +80,23 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     SetMenuBar( menuBar );
     CreateStatusBar();
     SetStatusText( "Welcome to wxWidgets!" );
+
+    auto toolbar = CreateToolBar();
+    toolbar->AddTool(
+        wxID_EXIT,
+        wxT("Exit application"),
+        wxXmlResource::Get()->LoadBitmap(wxT("map"))
+    );
+    toolbar->AddTool(
+        wxID_EXIT,
+        wxT("Exit application"),
+        wxXmlResource::Get()->LoadBitmap(wxT("snapshot"))
+    );
+    toolbar->AddTool(
+        wxID_EXIT,
+        wxT("Exit application"),
+        wxXmlResource::Get()->LoadBitmap(wxT("movement"))
+    );
 
     auto panel = new wxPanel(this);
     m_canvas = new VideoCanvas(panel);
